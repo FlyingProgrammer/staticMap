@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <style type="text/css">
+        body {
+            padding: 0;
+            margin: 0;
+            color: #444;
+        }
+
+        html,
+        body,
+        #map {
+            height: 100%;
+        }
+    </style>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+    <script src="https://cdn.bootcss.com/proj4js/2.4.3/proj4.js"></script>
+    <script src="https://cdn.bootcss.com/proj4leaflet/1.0.1/proj4leaflet.min.js"></script>
+    <script type="text/javascript" src='./plugins/leaflet.ChineseTmsProviders.js'></script>
+
+
+    <style>
+        .menus {
+            position: absolute;
+            top: 20px;
+            right: 80px;
+            z-index: 999;
+            display: none;
+        }
+
+        #input {
+            width: 300px;
+            min-height: 30px;
+        }
+
+        .leaflet-marker-icon {
+            border: none;
+            background: transparent;
+            margin-left: 0px !important
+        }
+
+        .marker {
+            position: relative;
+            left: -50% !important;
+            top: -50% !important;
+
+            font-weight: 600;
+        }
+
+        .marker-text {
+            text-align: center;
+
+            font-size: 14px;
+            color: #f00;
+            background: rgba(255, 255, 255, 0.7);
+            /* transform: translateX(-50%); */
+        }
+
+        .detail-info {
+            display: flex;
+            flex-direction: column;
+
+            align-items: center;
+            width: 300px;
+        }
+
+        #query {
+            margin-left: 16px;
+            background-color: #2da44e;
+            color: #fff;
+
+            height: 32px;
+            width: 100px;
+        }
+
+        .box {
+            position: absolute;
+            display: inline-block;
+            bottom: 200px;
+            right: 20px;
+            z-index: 999;
+            width: fit-content;
+            background-color: rgba(0, 0, 0, 0.8);
+            border-radius: 16px;
+            ;
+            /* width: 200px; */
+        }
+
+        .checkboxs {
+            /* width: 200px; */
+
+            padding: 12px;
+            ;
+            display: flex;
+            flex-direction: column;
+            color: #fff;
+
+            /* background: #fff; */
+        }
+
+        .my-icon {
+            background: transparent;
+            width: auto !important;
+
+            /* text-shadow: 2px 2px #fff; */
+
+        }
+
+        .marker {
+            display: flex;
+            word-break: keep-all;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: #000;
+            transform: scale(0.8);
+            line-height: 1;
+            font-weight: 500;
+
+        }
+
+        #sql_list {
+
+            /* right:20px; */
+        }
+
+        .u-j-middle {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        #latlng-content {
+            position: absolute;
+            bottom: 5px;
+            left: 5px;
+            background: rgb(187, 186, 186, 0.7);
+            color: #fff;
+            font-size: 14px;
+            z-index: 999;
+            display: flex;
+        }
+
+        #copy {
+            margin-left: 6px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id='map'></div>
+
+
+
+    <div id="latlng-content">
+        <div id="latlng"></div>
+        <button id="copy">复制</button>
+    </div>
+</body>
+<script>
+    function getQueryVariable(variable) {
+        var query = window.location.search.substring(1);
+        var vars = query.split("&");
+        for (var i = 0; i < vars.length; i++) {
+            var pair = vars[i].split("=");
+            if (pair[0] == variable) { return pair[1]; }
+        }
+        return (false);
+    }
+    const field_chinese={
+        falt:"海拔",
+        flat:"纬度",
+        flng:"经度",
+        fname:"名称",
+        fcity:"城市",
+        fcounty:"区县",
+        fprom:"突起度"
+
+    }
+</script>
+<script src="./lib/init.js"></script>
+<script type="text/javascript">
+
+    var marker_color = "#f00"//"#fe8213"
+    function trigger() {
+        if (document.getElementById("jsonCheckbox").checked) {
+            loadGeoJSON()
+            localStorage.setItem("jsonChecked", 1)
+        }
+        else {
+            clearGeoJSON()
+            localStorage.setItem("jsonChecked", 0)
+        }
+        // if (document.getElementById("allCheckbox").checked) {
+        //     getPeaks()
+        //     localStorage.setItem("allChecked", 1)
+        // }
+        // else {
+        //     clearAllMarker()
+        //     localStorage.setItem("allChecked", 0)
+        // }
+        if (document.getElementById("queryCheckbox").checked) {
+            // btn.click()
+            document.querySelector("#menus").style.display = "block";
+            localStorage.setItem("queryChecked", 1)
+        }
+        else {
+            clearQueryMarker();
+            localStorage.setItem("queryChecked", 0)
+            document.querySelector("#menus").style.display = "none"
+        }
+    }
+
+
+    function loadGeoJSON() {
+        var myStyle = {
+            "color": "#f00",
+            "weight": 2,
+            "fillColor": "transparent",
+            "opacity": 0.5,
+
+        };
+        axios("./lib/geo.json").then(res => {
+            geojson = res.data
+
+            var layerGeo = L.geoJSON(geojson, {
+                style: myStyle,
+                onEachFeature: function (feature, layer) {
+
+                    const center = feature.properties.centroid;
+
+                    if (center) {
+                        drawText(feature.properties.name, center.reverse()).addTo(map);
+                    }
+                }
+            }).addTo(map)
+
+            geoJSONLayer.push(layerGeo)
+        })
+
+
+
+
+    }
+    function drawText(text, latlng) {
+        var divIcon = L.divIcon({ html: `<div class='marker-text' style="color:${marker_color}">${text}</div>` });
+
+
+        return L.marker(latlng, {
+            icon: divIcon
+        })
+
+    }
+    function clearGeoJSON() {
+        for (let marker of geoJSONLayer) {
+            map.removeLayer(marker);
+        }
+        geoJSONLayer = []
+    }
+
+
+    function getPeaks() {
+        drawMarkers(data)
+    }
+    function drawMarkers(markers, keep = false) {
+
+
+
+        for (let marker of markers) {
+
+            const _newMarker = getMarker(marker);
+            _newMarker.addTo(map);
+
+        }
+    }
+    function onZoom() {
+        const center = map.getCenter();
+
+        const limit = 50;
+        const bounds = map.getBounds()
+        const { lat: lat1, lng: lng1 } = bounds.getSouthWest();
+        const { lat: lat2, lng: lng2 } = bounds.getNorthEast();
+        localStorage.setItem("lat", center.lat)
+        localStorage.setItem("zoom", map.getZoom())
+        localStorage.setItem("lng", center.lng)
+
+
+        // getPeaks();
+
+
+    }
+
+
+    function getSvgIcon(width = 16, color = "#fe8213", alt, name) {
+        const div = document.createElement("div");
+        const span = document.createElement("span");
+        span.innerHTML = `
+        <svg t="1650609541292" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1634" 
+        width="${width}" height="${width}">
+        <path d="M526.064493 72.04843l27.659378 110.933333 34.759111 139.480176 28.103111 111.377066 34.315377 137.409421 34.167467 137.409421 31.209244 125.1328 31.652977 125.724443H303.754095l34.6112-137.853155 35.202844-141.25511 34.167466-136.521954 34.315378-138.148977 34.167466-135.634488 34.6112-139.036443L525.62076 72.04843h0.443733" fill="${color}" p-id="1635"></path></svg>`
+        const span1 = document.createElement("span");
+        span1.innerText = name;
+        span1.style.color = marker_color;
+        span1.className = "marker-text"
+        const span2 = document.createElement("span");
+        span2.innerText = alt;
+        span2.style.color = marker_color;
+        span2.className = "marker-text"
+        div.appendChild(span)
+        div.appendChild(span1)
+        div.appendChild(span2)
+        div.className = "marker"
+        return div
+    }
+
+
+    function getNormalDesc(marker) {
+       
+        const _marker = {...marker};
+        for(const key in field_chinese){
+            delete _marker[key]
+            _marker[field_chinese[key]] = marker[key]
+
+        }
+
+        return JSON.stringify(_marker).replace(/[,{}]/g, "<br/>").replace(/"/g,"")
+    }
+    function getMarker(marker) {
+        var myIcon = L.icon({
+            iconUrl: './assets/peak.png',
+            iconSize: [16, 16],
+
+        });
+
+        const { fname, falt, flat, flng, fprom } = marker;
+        var size = 13 + (fprom / 300 || 0)
+
+
+        const icon = getSvgIcon(size, marker_color, falt, fname);
+        // const icon = getTextMarker(fname||"",falt||"",fprom )
+        var divIcon = L.divIcon({ html: icon, className: "my-icon" });
+
+        const desc = getNormalDesc(marker)
+        return L.marker([flat, flng], {
+            icon: divIcon
+        }).bindPopup(desc)
+        // .bindTooltip(`${fprom}`);
+
+
+    }
+
+    window.addEventListener("load", function () {
+       map.on("zoomend", onZoom)
+        map.on("mousedown", function (e) {
+            let { lat, lng } = e.latlng;
+            lat = lat.toFixed(4);
+            lng = lng.toFixed(4);
+            document.getElementById("latlng").innerText = `${lng},${lat}`
+        })
+        map.on("moveend", onZoom)
+        loadData()
+        
+    })
+    function  loadData(){
+        const topic = getQueryVariable("topic");
+        if(topic){
+            const script = document.createElement("script");
+            script.src=`./data/${topic}.js`;
+            document.body.appendChild(script)
+            script.onload=function(){
+                drawMarkers(window.markerdata)
+            }
+            
+        }
+        
+    }
+</script>
+
+</html>
