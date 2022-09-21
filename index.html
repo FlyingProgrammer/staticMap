@@ -16,6 +16,25 @@
         #map {
             height: 100%;
         }
+
+       
+
+        @media only screen and (max-width: 500px) {
+            .leaflet-control-layers-list {
+                font-size: 32px!important;
+            }
+            .leaflet-control-layers-selector{
+                width:  32px!important;
+                height:32px!important;
+            }
+            
+            .leaflet-control-layers-toggle{
+                width: 68px!important;
+                height: 68px!important;
+                background-size:46px 46px!important;
+            }
+            
+        }
     </style>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
@@ -172,14 +191,14 @@
         }
         return (false);
     }
-    const field_chinese={
-        falt:"海拔",
-        flat:"纬度",
-        flng:"经度",
-        fname:"名称",
-        fcity:"城市",
-        fcounty:"区县",
-        fprom:"突起度"
+    const field_chinese = {
+        falt: "海拔",
+        flat: "纬度",
+        flng: "经度",
+        fname: "名称",
+        fcity: "城市",
+        fcounty: "区县",
+        fprom: "突起度"
 
     }
 </script>
@@ -217,7 +236,10 @@
     }
 
 
-    function loadGeoJSON() {
+    function loadGeoJSON(geojson) {
+        if (!geojson) {
+            return
+        }
         var myStyle = {
             "color": "#f00",
             "weight": 2,
@@ -225,26 +247,20 @@
             "opacity": 0.5,
 
         };
-        axios("./lib/geo.json").then(res => {
-            geojson = res.data
 
-            var layerGeo = L.geoJSON(geojson, {
-                style: myStyle,
-                onEachFeature: function (feature, layer) {
 
-                    const center = feature.properties.centroid;
 
-                    if (center) {
-                        drawText(feature.properties.name, center.reverse()).addTo(map);
-                    }
+        var layerGeo = L.geoJSON(geojson, {
+            style: myStyle,
+            onEachFeature: function (feature, layer) {
+
+                const center = feature.properties.centroid;
+
+                if (center) {
+                    drawText(feature.properties.name, center.reverse()).addTo(map);
                 }
-            }).addTo(map)
-
-            geoJSONLayer.push(layerGeo)
-        })
-
-
-
+            }
+        }).addTo(map)
 
     }
     function drawText(text, latlng) {
@@ -320,15 +336,15 @@
 
 
     function getNormalDesc(marker) {
-       
-        const _marker = {...marker};
-        for(const key in field_chinese){
+
+        const _marker = { ...marker };
+        for (const key in field_chinese) {
             delete _marker[key]
             _marker[field_chinese[key]] = marker[key]
 
         }
 
-        return JSON.stringify(_marker).replace(/[,{}]/g, "<br/>").replace(/"/g,"")
+        return JSON.stringify(_marker).replace(/[,{}]/g, "<br/>").replace(/"/g, "")
     }
     function getMarker(marker) {
         var myIcon = L.icon({
@@ -355,7 +371,7 @@
     }
 
     window.addEventListener("load", function () {
-       map.on("zoomend", onZoom)
+        map.on("zoomend", onZoom)
         map.on("mousedown", function (e) {
             let { lat, lng } = e.latlng;
             lat = lat.toFixed(4);
@@ -364,20 +380,21 @@
         })
         map.on("moveend", onZoom)
         loadData()
-        
+
     })
-    function  loadData(){
+    function loadData() {
         const topic = getQueryVariable("topic");
-        if(topic){
+        if (topic) {
             const script = document.createElement("script");
-            script.src=`./data/${topic}.js`;
+            script.src = `./data/${topic}.js`;
             document.body.appendChild(script)
-            script.onload=function(){
-                drawMarkers(window.markerdata)
+            script.onload = function () {
+                drawMarkers(window.markers || [])
+                loadGeoJSON(window.geojson)
             }
-            
+
         }
-        
+
     }
 </script>
 
