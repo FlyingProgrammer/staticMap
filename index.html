@@ -19,7 +19,18 @@
 
        
 
-        @media only screen and (max-width: 500px) {
+      
+    </style>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+    <script src="https://cdn.bootcss.com/proj4js/2.4.3/proj4.js"></script>
+    <script src="https://cdn.bootcss.com/proj4leaflet/1.0.1/proj4leaflet.min.js"></script>
+    <script type="text/javascript" src='./plugins/leaflet.ChineseTmsProviders.js'></script>
+
+    <script>
+        if((/AppleWebKit.*Mobile.*/).test(navigator.userAgent)){
+            const style = document.createElement("style")
+            style.innerText=`
             .leaflet-control-layers-list {
                 font-size: 32px!important;
             }
@@ -33,16 +44,14 @@
                 height: 68px!important;
                 background-size:46px 46px!important;
             }
-            
+           
+            .leaflet-control-layers-list {
+                margin-top:100px;
+            }
+            `
+            document.head.appendChild(style)
         }
-    </style>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
-    <script src="https://cdn.bootcss.com/proj4js/2.4.3/proj4.js"></script>
-    <script src="https://cdn.bootcss.com/proj4leaflet/1.0.1/proj4leaflet.min.js"></script>
-    <script type="text/javascript" src='./plugins/leaflet.ChineseTmsProviders.js'></script>
-
-
+    </script>
     <style>
         .menus {
             position: absolute;
