@@ -16,11 +16,8 @@
         #map {
             height: 100%;
         }
-
-       
-
-      
     </style>
+
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
     <script src="https://cdn.bootcss.com/proj4js/2.4.3/proj4.js"></script>
@@ -28,9 +25,15 @@
     <script type="text/javascript" src='./plugins/leaflet.ChineseTmsProviders.js'></script>
 
     <script>
-        if((/AppleWebKit.*Mobile.*/).test(navigator.userAgent)){
+        const src = '//cdn.jsdelivr.net/npm/eruda';
+        if (/eruda/.test(window.location) ) {
+            document.write(`${'<scr' + 'ipt src="'}${src}"></scr` + `ipt>`);
+            document.write('<scr' + 'ipt>eruda.init();</scr' + 'ipt>');
+        };
+  
+        if ((/AppleWebKit.*Mobile.*/).test(navigator.userAgent)) {
             const style = document.createElement("style")
-            style.innerText=`
+            style.innerText = `
             .leaflet-control-layers-list {
                 font-size: 32px!important;
             }
@@ -50,6 +53,31 @@
             }
             `
             document.head.appendChild(style)
+        }
+        function performanceTest() {
+            let timing = performance.timing,
+                readyStart = timing.fetchStart - timing.navigationStart,
+                redirectTime = timing.redirectEnd - timing.redirectStart,
+                appcacheTime = timing.domainLookupStart - timing.fetchStart,
+                unloadEventTime = timing.unloadEventEnd - timing.unloadEventStart,
+                lookupDomainTime = timing.domainLookupEnd - timing.domainLookupStart,
+                connectTime = timing.connectEnd - timing.connectStart,
+                requestTime = timing.responseEnd - timing.requestStart,
+                initDomTreeTime = timing.domInteractive - timing.responseEnd,
+                domReadyTime = timing.domComplete - timing.domInteractive,
+                loadEventTime = timing.loadEventEnd - timing.loadEventStart,
+                loadTime = timing.loadEventEnd - timing.navigationStart;
+            console.log('准备新页面时间耗时: ' + readyStart);
+            console.log('redirect 重定向耗时: ' + redirectTime);
+            console.log('Appcache 耗时: ' + appcacheTime);
+            console.log('unload 前文档耗时: ' + unloadEventTime);
+            console.log('DNS 查询耗时: ' + lookupDomainTime);
+            console.log('TCP连接耗时: ' + connectTime);
+            console.log('request请求耗时: ' + requestTime);
+            console.log('请求完毕至DOM加载: ' + initDomTreeTime);
+            console.log('解析DOM树耗时: ' + domReadyTime);
+            console.log('load事件耗时: ' + loadEventTime);
+            console.log('加载时间耗时: ' + loadTime);
         }
     </script>
     <style>
@@ -388,10 +416,15 @@
             document.getElementById("latlng").innerText = `${lng},${lat}`
         })
         map.on("moveend", onZoom)
-        loadData()
+        loadData();
+        setTimeout(() => {
+            performanceTest()
+        }, 1000)
+
 
     })
     function loadData() {
+        console.time("loadData")
         const topic = getQueryVariable("topic");
         if (topic) {
             const script = document.createElement("script");
@@ -399,7 +432,8 @@
             document.body.appendChild(script)
             script.onload = function () {
                 drawMarkers(window.markers || [])
-                loadGeoJSON(window.geojson)
+                loadGeoJSON(window.geojson);
+                console.timeEnd("loadData")
             }
 
         }
