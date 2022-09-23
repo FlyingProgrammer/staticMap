@@ -20,23 +20,17 @@
             transform: translate(-50,-50);
         }
         #map{
-           /* opacity: 0.2; */
+           opacity: 0.1;
         }
     </style>
-
-    <!-- <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" /> -->
     <link rel="stylesheet" href="//sztoosimple.gitee.io/static-map/lib//leaflet@1.6.0.css" />
    
-    <!-- <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script> -->
-    <script src="//sztoosimple.gitee.io/static-map/lib//leaflet@1.6.0.js"></script>
-    <script src="//sztoosimple.gitee.io/static-map/lib//proj4@2.4.3.js"></script>
-    <script src="//sztoosimple.gitee.io/static-map/lib//proj4leaflet1.0.1.min.js"></script>
-    
-    <!-- <script src="https://cdn.bootcss.com/proj4js/2.4.3/proj4.js"></script> -->
-    <!-- <script src="https://cdn.bootcss.com/proj4leaflet/1.0.1/proj4leaflet.min.js"></script> -->
-    <script type="text/javascript" src='//sztoosimple.gitee.io/static-map/plugins/leaflet.ChineseTmsProviders.js'></script>
+    <!-- <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" /> -->
+   
 
     <script>
+        var timeLogIndex = 0;
+        console.time("tick_time")
         localStorage.setItem("eruda-entry-button","{\"rememberPos\":true,\"pos\":{\"x\":364,\"y\":846}}")
         // const src = '//cdn.jsdelivr.net/npm/eruda';
         const src="//sztoosimple.gitee.io/static-map/lib//eruda.js"
@@ -95,19 +89,8 @@
         }
     </script>
     <style>
-        .menus {
-            position: absolute;
-            top: 20px;
-            right: 80px;
-            z-index: 999;
-            display: none;
-        }
-
-        #input {
-            width: 300px;
-            min-height: 30px;
-        }
-
+      
+       
         .leaflet-marker-icon {
             border: none;
             background: transparent;
@@ -139,48 +122,8 @@
             width: 300px;
         }
 
-        #query {
-            margin-left: 16px;
-            background-color: #2da44e;
-            color: #fff;
-
-            height: 32px;
-            width: 100px;
-        }
-
-        .box {
-            position: absolute;
-            display: inline-block;
-            bottom: 200px;
-            right: 20px;
-            z-index: 999;
-            width: fit-content;
-            background-color: rgba(0, 0, 0, 0.8);
-            border-radius: 16px;
-            ;
-            /* width: 200px; */
-        }
-
-        .checkboxs {
-            /* width: 200px; */
-
-            padding: 12px;
-            ;
-            display: flex;
-            flex-direction: column;
-            color: #fff;
-
-            /* background: #fff; */
-        }
-
-        .my-icon {
-            background: transparent;
-            width: auto !important;
-
-            /* text-shadow: 2px 2px #fff; */
-
-        }
-
+       
+     
         .marker {
             display: flex;
             word-break: keep-all;
@@ -193,16 +136,6 @@
             line-height: 1;
             font-weight: 500;
 
-        }
-
-        #sql_list {
-
-            /* right:20px; */
-        }
-
-        .u-j-middle {
-            display: flex;
-            justify-content: space-between;
         }
 
         #latlng-content {
@@ -253,40 +186,36 @@
 
     }
 </script>
-<script src="./lib/init.js"></script>
+<script>
+console.timeLog("tick_time",timeLogIndex++)
+</script>
+ <!-- <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script> -->
+ <script src="//sztoosimple.gitee.io/static-map/lib//leaflet@1.6.0.js"></script>
+ <script>
+        console.timeLog("tick_time",timeLogIndex++)
+        </script>
+ <script src="//sztoosimple.gitee.io/static-map/lib//proj4@2.4.3.js"></script>
+ <script>
+        console.timeLog("tick_time",timeLogIndex++)
+        </script>
+ <script src="//sztoosimple.gitee.io/static-map/lib//proj4leaflet1.0.1.min.js"></script>
+ <script>
+        console.timeLog("tick_time",timeLogIndex++)
+        </script>
+ <!-- <script src="https://cdn.bootcss.com/proj4js/2.4.3/proj4.js"></script> -->
+ <!-- <script src="https://cdn.bootcss.com/proj4leaflet/1.0.1/proj4leaflet.min.js"></script> -->
+ <script type="text/javascript" src='//sztoosimple.gitee.io/static-map/plugins/leaflet.ChineseTmsProviders.js'></script>
+ <script>
+        console.timeLog("tick_time",timeLogIndex++)
+        </script>
+<script src="//sztoosimple.gitee.io/static-map/lib/init.js"></script>
+<script>
+        console.timeLog("tick_time",timeLogIndex++)
+        </script>
 <script type="text/javascript">
 
     var marker_color = "#f00"//"#fe8213"
-    function trigger() {
-        if (document.getElementById("jsonCheckbox").checked) {
-            loadGeoJSON()
-            localStorage.setItem("jsonChecked", 1)
-        }
-        else {
-            clearGeoJSON()
-            localStorage.setItem("jsonChecked", 0)
-        }
-        // if (document.getElementById("allCheckbox").checked) {
-        //     getPeaks()
-        //     localStorage.setItem("allChecked", 1)
-        // }
-        // else {
-        //     clearAllMarker()
-        //     localStorage.setItem("allChecked", 0)
-        // }
-        if (document.getElementById("queryCheckbox").checked) {
-            // btn.click()
-            document.querySelector("#menus").style.display = "block";
-            localStorage.setItem("queryChecked", 1)
-        }
-        else {
-            clearQueryMarker();
-            localStorage.setItem("queryChecked", 0)
-            document.querySelector("#menus").style.display = "none"
-        }
-    }
-
-
+   
     function loadGeoJSON(geojson) {
         if (!geojson) {
             return
@@ -314,26 +243,8 @@
         }).addTo(map)
 
     }
-    function drawText(text, latlng) {
-        var divIcon = L.divIcon({ html: `<div class='marker-text' style="color:${marker_color}">${text}</div>` });
+  
 
-
-        return L.marker(latlng, {
-            icon: divIcon
-        })
-
-    }
-    function clearGeoJSON() {
-        for (let marker of geoJSONLayer) {
-            map.removeLayer(marker);
-        }
-        geoJSONLayer = []
-    }
-
-
-    function getPeaks() {
-        drawMarkers(data)
-    }
     function drawMarkers(markers, keep = false) {
 
 
@@ -438,6 +349,7 @@
 
     })
     function loadData() {
+        console.timeLog("tick_time",timeLogIndex++)
         console.time("loadData")
         const topic = getQueryVariable("topic");
         if (topic) {
@@ -448,6 +360,7 @@
                 drawMarkers(window.markers || [])
                 loadGeoJSON(window.geojson);
                 console.timeEnd("loadData")
+                console.timeLog("tick_time",timeLogIndex++)
             }
 
         }
