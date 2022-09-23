@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <style type="text/css">
+        body {
+            padding: 0;
+            margin: 0;
+            color: #444;
+        }
+
+        html,
+        body,
+        #map {
+            height: 100%;
+        }
+
+        #map {
+            opacity: 0.1;
+        }
+    </style>
+    <link rel="stylesheet" href="//sztoosimple.gitee.io/static-map/lib/leaflet@1.6.0.css" />
+
+    <script>
+        var timeLogIndex = 0;
+        var beginEruda = Date.now()
+        localStorage.setItem("eruda-entry-button", "{\"rememberPos\":true,\"pos\":{\"x\":364,\"y\":846}}")
+        // const src = '//cdn.jsdelivr.net/npm/eruda';
+        const src = "//sztoosimple.gitee.io/static-map/lib/eruda.js"
+        if (/eruda/.test(window.location)) {
+            document.write(`${'<scr' + 'ipt src="'}${src}"></scr` + `ipt>`);
+            document.write('<scr' + 'ipt>eruda.init();</scr' + 'ipt>');
+        };
+        console.log("eruda:", Date.now() - beginEruda)
+
+        if ((/AppleWebKit.*Mobile.*/).test(navigator.userAgent)) {
+            const style = document.createElement("style")
+            style.innerText = `
+            .leaflet-control-layers-list {
+                font-size: 32px!important;
+            }
+            .leaflet-control-layers-selector{
+                width:  32px!important;
+                height:32px!important;
+            }
+            
+            .leaflet-control-layers-toggle{
+                width: 68px!important;
+                height: 68px!important;
+                background-size:46px 46px!important;
+            }
+           
+            .leaflet-control-layers-list {
+                margin-top:100px;
+            }
+            `
+            document.head.appendChild(style)
+            try {
+                setTimeout(() => {
+                    const elem = document.querySelector("html > div:nth-child(2)").shadowRoot.querySelector("#eruda").querySelector(".luna-console");
+                    elem.style.fontSize = "16px";
+                    elem.style.color = "#000";
+                }, 3000)
+
+            } catch (error) {
+
+            }
+
+        }
+        function performanceTest() {
+            let timing = performance.timing,
+                readyStart = timing.fetchStart - timing.navigationStart,
+                redirectTime = timing.redirectEnd - timing.redirectStart,
+                appcacheTime = timing.domainLookupStart - timing.fetchStart,
+                unloadEventTime = timing.unloadEventEnd - timing.unloadEventStart,
+                lookupDomainTime = timing.domainLookupEnd - timing.domainLookupStart,
+                connectTime = timing.connectEnd - timing.connectStart,
+                requestTime = timing.responseEnd - timing.requestStart,
+                initDomTreeTime = timing.domInteractive - timing.responseEnd,
+                domReadyTime = timing.domComplete - timing.domInteractive,
+                loadEventTime = timing.loadEventEnd - timing.loadEventStart,
+                loadTime = timing.loadEventEnd - timing.navigationStart;
+            console.log('准备新页面时间耗时: ' + readyStart);
+            console.log('redirect 重定向耗时: ' + redirectTime);
+            console.log('Appcache 耗时: ' + appcacheTime);
+            console.log('unload 前文档耗时: ' + unloadEventTime);
+            console.log('DNS 查询耗时: ' + lookupDomainTime);
+            console.log('TCP连接耗时: ' + connectTime);
+            console.log('request请求耗时: ' + requestTime);
+            console.log('请求完毕至DOM加载: ' + initDomTreeTime);
+            console.log('解析DOM树耗时: ' + domReadyTime);
+            console.log('load事件耗时: ' + loadEventTime);
+            console.log('加载时间耗时: ' + loadTime);
+        }
+    </script>
+    <style>
+        .leaflet-marker-icon {
+            border: none;
+            background: transparent;
+            margin-left: 0px !important
+        }
+
+        .marker {
+            position: relative;
+            left: -50% !important;
+            top: -50% !important;
+
+            font-weight: 600;
+        }
+
+        .marker-text {
+            text-align: center;
+
+            font-size: 14px;
+            color: #f00;
+            background: rgba(255, 255, 255, 0.7);
+            /* transform: translateX(-50%); */
+        }
+
+        .detail-info {
+            display: flex;
+            flex-direction: column;
+
+            align-items: center;
+            width: 300px;
+        }
+
+
+
+        .marker {
+            display: flex;
+            word-break: keep-all;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: #000;
+            transform: scale(0.8);
+            line-height: 1;
+            font-weight: 500;
+
+        }
+
+        #latlng-content {
+            position: absolute;
+            bottom: 5px;
+            left: 5px;
+            background: rgb(187, 186, 186, 0.7);
+            color: #fff;
+            font-size: 14px;
+            z-index: 999;
+            display: flex;
+        }
+
+        #copy {
+            margin-left: 6px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id='map'></div>
+
+
+
+    <div id="latlng-content">
+        <div id="latlng"></div>
+        <button id="copy">复制</button>
+    </div>
+</body>
+<script>
+    function getQueryVariable(variable) {
+        var query = window.location.search.substring(1);
+        var vars = query.split("&");
+        for (var i = 0; i < vars.length; i++) {
+            var pair = vars[i].split("=");
+            if (pair[0] == variable) { return pair[1]; }
+        }
+        return (false);
+    }
+    const field_chinese = {
+        falt: "海拔",
+        flat: "纬度",
+        flng: "经度",
+        fname: "名称",
+        fcity: "城市",
+        fcounty: "区县",
+        fprom: "突起度"
+
+    }
+</script>
+<!-- <script>在这里插入script</script> -->
+
+<script type="text/javascript">
+
+    var marker_color = "#f00"//"#fe8213"
+
+    function loadGeoJSON(geojson) {
+        if (!geojson) {
+            return
+        }
+        var myStyle = {
+            "color": "#f00",
+            "weight": 2,
+            "fillColor": "transparent",
+            "opacity": 0.5,
+
+        };
+
+
+
+        var layerGeo = L.geoJSON(geojson, {
+            style: myStyle,
+            onEachFeature: function (feature, layer) {
+
+                const center = feature.properties.centroid;
+
+                if (center) {
+                    drawText(feature.properties.name, center.reverse()).addTo(map);
+                }
+            }
+        }).addTo(map)
+
+    }
+
+
+    function drawMarkers(markers, keep = false) {
+
+
+
+        for (let marker of markers) {
+
+            const _newMarker = getMarker(marker);
+            _newMarker.addTo(map);
+
+        }
+    }
+    function onZoom() {
+        const center = map.getCenter();
+
+        const limit = 50;
+        const bounds = map.getBounds()
+        const { lat: lat1, lng: lng1 } = bounds.getSouthWest();
+        const { lat: lat2, lng: lng2 } = bounds.getNorthEast();
+        localStorage.setItem("lat", center.lat)
+        localStorage.setItem("zoom", map.getZoom())
+        localStorage.setItem("lng", center.lng)
+
+
+        // getPeaks();
+
+
+    }
+
+
+    function getSvgIcon(width = 16, color = "#fe8213", alt, name) {
+        const div = document.createElement("div");
+        const span = document.createElement("span");
+        span.innerHTML = `
+        <svg t="1650609541292" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1634" 
+        width="${width}" height="${width}">
+        <path d="M526.064493 72.04843l27.659378 110.933333 34.759111 139.480176 28.103111 111.377066 34.315377 137.409421 34.167467 137.409421 31.209244 125.1328 31.652977 125.724443H303.754095l34.6112-137.853155 35.202844-141.25511 34.167466-136.521954 34.315378-138.148977 34.167466-135.634488 34.6112-139.036443L525.62076 72.04843h0.443733" fill="${color}" p-id="1635"></path></svg>`
+        const span1 = document.createElement("span");
+        span1.innerText = name;
+        span1.style.color = marker_color;
+        span1.className = "marker-text"
+        const span2 = document.createElement("span");
+        span2.innerText = alt;
+        span2.style.color = marker_color;
+        span2.className = "marker-text"
+        div.appendChild(span)
+        div.appendChild(span1)
+        div.appendChild(span2)
+        div.className = "marker"
+        return div
+    }
+
+
+    function getNormalDesc(marker) {
+
+        const _marker = { ...marker };
+        for (const key in field_chinese) {
+            delete _marker[key]
+            _marker[field_chinese[key]] = marker[key]
+
+        }
+
+        return JSON.stringify(_marker).replace(/[,{}]/g, "<br/>").replace(/"/g, "")
+    }
+    function getMarker(marker) {
+        var myIcon = L.icon({
+            iconUrl: './assets/peak.png',
+            iconSize: [16, 16],
+
+        });
+
+        const { fname, falt, flat, flng, fprom } = marker;
+        var size = 13 + (fprom / 300 || 0)
+
+
+        const icon = getSvgIcon(size, marker_color, falt, fname);
+        // const icon = getTextMarker(fname||"",falt||"",fprom )
+        var divIcon = L.divIcon({ html: icon, className: "my-icon" });
+
+        const desc = getNormalDesc(marker)
+        return L.marker([flat, flng], {
+            icon: divIcon
+        }).bindPopup(desc)
+        // .bindTooltip(`${fprom}`);
+
+
+    }
+
+    window.addEventListener("load", function () {
+        map.on("zoomend", onZoom)
+        map.on("mousedown", function (e) {
+            let { lat, lng } = e.latlng;
+            lat = lat.toFixed(4);
+            lng = lng.toFixed(4);
+            document.getElementById("latlng").innerText = `${lng},${lat}`
+        })
+        map.on("moveend", onZoom)
+        loadData();
+        setTimeout(() => {
+            performanceTest()
+        }, 1000)
+
+
+    })
+    function loadData() {
+  
+        console.time("loadData")
+        const topic = getQueryVariable("topic");
+        if (topic) {
+            const script = document.createElement("script");
+            script.src = `./data/${topic}.js`;
+            document.body.appendChild(script)
+            script.onload = function () {
+                drawMarkers(window.markers || [])
+                if (window.markers[0]) {
+                    map.panTo([window.markers[0].flat, window.markers[0].flng])
+                }
+                loadGeoJSON(window.geojson);
+                console.timeEnd("loadData")
+   
+            }
+
+        }
+
+    }
+</script>
+
+</html>
