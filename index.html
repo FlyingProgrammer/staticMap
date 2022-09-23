@@ -39,7 +39,7 @@
             document.write('<scr' + 'ipt>eruda.init();</scr' + 'ipt>');
         };
         console.log("eruda:", Date.now()-beginEruda)
-        console.time("tick_time")
+       
         if ((/AppleWebKit.*Mobile.*/).test(navigator.userAgent)) {
             const style = document.createElement("style")
             style.innerText = `
@@ -188,6 +188,7 @@
     }
 </script>
 <script>
+     console.time("tick_time")
 console.timeLog("tick_time",timeLogIndex++)
 </script>
  <!-- <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script> -->
