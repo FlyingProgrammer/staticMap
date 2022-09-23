@@ -25,15 +25,16 @@
 
     <script>
         var timeLogIndex = 0;
-        var beginEruda = Date.now()
+        
         localStorage.setItem("eruda-entry-button", "{\"rememberPos\":true,\"pos\":{\"x\":364,\"y\":846}}")
         // const src = '//cdn.jsdelivr.net/npm/eruda';
         const src = "//sztoosimple.gitee.io/static-map/lib/eruda.js"
         if (/eruda/.test(window.location)) {
+            var beginEruda = Date.now()
             document.write(`${'<scr' + 'ipt src="'}${src}"></scr` + `ipt>`);
-            document.write('<scr' + 'ipt>eruda.init();</scr' + 'ipt>');
+            document.write(`<scr`+`ipt>eruda.init();console.log("eruda:", Date.now() - beginEruda)</sc`+`ript>`);
         };
-        console.log("eruda:", Date.now() - beginEruda)
+        
 
         if ((/AppleWebKit.*Mobile.*/).test(navigator.userAgent)) {
             const style = document.createElement("style")
@@ -191,6 +192,10 @@
 
     }
 </script>
+<script>
+    window.scriptLoadTime = Date.now()
+</script>
+
 <!-- <script>在这里插入script</script> -->
 
 <script type="text/javascript">

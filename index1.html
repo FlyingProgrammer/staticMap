@@ -23,18 +23,20 @@
     </style>
     <link rel="stylesheet" href="//sztoosimple.gitee.io/static-map/lib/leaflet@1.6.0.css" />
 
+    <!-- <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" /> -->
+
+
     <script>
         var timeLogIndex = 0;
-        
+        var beginEruda = Date.now()
         localStorage.setItem("eruda-entry-button", "{\"rememberPos\":true,\"pos\":{\"x\":364,\"y\":846}}")
         // const src = '//cdn.jsdelivr.net/npm/eruda';
         const src = "//sztoosimple.gitee.io/static-map/lib/eruda.js"
         if (/eruda/.test(window.location)) {
-            var beginEruda = Date.now()
             document.write(`${'<scr' + 'ipt src="'}${src}"></scr` + `ipt>`);
-            document.write(`<scr`+`ipt>eruda.init();console.log("eruda:", Date.now() - beginEruda)</sc`+`ript>`);
+            document.write('<scr' + 'ipt>eruda.init();</scr' + 'ipt>');
         };
-        
+        console.log("eruda:", Date.now() - beginEruda)
 
         if ((/AppleWebKit.*Mobile.*/).test(navigator.userAgent)) {
             const style = document.createElement("style")
@@ -193,15 +195,33 @@
     }
 </script>
 <script>
-    window.scriptLoadTime = Date.now()
+    console.time("tick_time")
+    console.timeLog("tick_time")
+    console.timeLog("tick_time", timeLogIndex++)
 </script>
-
-<script src="//sztoosimple.gitee.io/static-map/lib/leaflet@1.6.0.js?r=1663926685035"></script><script>console.log("leaflet@1.6.0.js",Date.now()-window.scriptLoadTime)</script>
-<script src="//sztoosimple.gitee.io/static-map/lib/proj4@2.4.3.js?r=1663926685035"></script><script>console.log("proj4@2.4.3.js",Date.now()-window.scriptLoadTime)</script>
-<script src="//sztoosimple.gitee.io/static-map/lib/proj4leaflet1.0.1.min.js?r=1663926685035"></script><script>console.log("proj4leaflet1.0.1.min.js",Date.now()-window.scriptLoadTime)</script>
-<script src="//sztoosimple.gitee.io/static-map/plugins/leaflet.ChineseTmsProviders.js?r=1663926685035"></script><script>console.log("leaflet.ChineseTmsProviders.js",Date.now()-window.scriptLoadTime)</script>
-<script src="//sztoosimple.gitee.io/static-map/lib/init.js?r=1663926685035"></script><script>console.log("init.js",Date.now()-window.scriptLoadTime)</script>
-
+<!-- <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script> -->
+<script src="//sztoosimple.gitee.io/static-map/lib/leaflet@1.6.0.js"></script>
+<script>
+    console.timeLog("tick_time", timeLogIndex++)
+</script>
+<script src="//sztoosimple.gitee.io/static-map/lib/proj4@2.4.3.js"></script>
+<script>
+    console.timeLog("tick_time", timeLogIndex++)
+</script>
+<script src="//sztoosimple.gitee.io/static-map/lib/proj4leaflet1.0.1.min.js"></script>
+<script>
+    console.timeLog("tick_time", timeLogIndex++)
+</script>
+<!-- <script src="https://cdn.bootcss.com/proj4js/2.4.3/proj4.js"></script> -->
+<!-- <script src="https://cdn.bootcss.com/proj4leaflet/1.0.1/proj4leaflet.min.js"></script> -->
+<script type="text/javascript" src='//sztoosimple.gitee.io/static-map/plugins/leaflet.ChineseTmsProviders.js'></script>
+<script>
+    console.timeLog("tick_time", timeLogIndex++)
+</script>
+<script src="//sztoosimple.gitee.io/static-map/lib/init.js"></script>
+<script>
+    console.timeLog("tick_time", timeLogIndex++)
+</script>
 <script type="text/javascript">
 
     var marker_color = "#f00"//"#fe8213"
@@ -339,7 +359,7 @@
 
     })
     function loadData() {
-  
+        console.timeLog("tick_time", timeLogIndex++)
         console.time("loadData")
         const topic = getQueryVariable("topic");
         if (topic) {
@@ -353,7 +373,7 @@
                 }
                 loadGeoJSON(window.geojson);
                 console.timeEnd("loadData")
-   
+                console.timeLog("tick_time", timeLogIndex++)
             }
 
         }
