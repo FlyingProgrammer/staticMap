@@ -25,20 +25,21 @@
     </style>
 
     <!-- <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" /> -->
-    <link rel="stylesheet" href="./lib/leaflet@1.6.0.css" />
+    <link rel="stylesheet" href="http://sztoosimple.gitee.io/static-map/lib//leaflet@1.6.0.css" />
    
     <!-- <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script> -->
-    <script src="./lib/leaflet@1.6.0.js"></script>
-    <script src="./lib/proj4@2.4.3.js"></script>
-    <script src="./lib/proj4leaflet1.0.1.min.js"></script>
+    <script src="http://sztoosimple.gitee.io/static-map/lib//leaflet@1.6.0.js"></script>
+    <script src="http://sztoosimple.gitee.io/static-map/lib//proj4@2.4.3.js"></script>
+    <script src="http://sztoosimple.gitee.io/static-map/lib//proj4leaflet1.0.1.min.js"></script>
     
     <!-- <script src="https://cdn.bootcss.com/proj4js/2.4.3/proj4.js"></script> -->
     <!-- <script src="https://cdn.bootcss.com/proj4leaflet/1.0.1/proj4leaflet.min.js"></script> -->
-    <script type="text/javascript" src='./plugins/leaflet.ChineseTmsProviders.js'></script>
+    <script type="text/javascript" src='http://sztoosimple.gitee.io/static-map/plugins/leaflet.ChineseTmsProviders.js'></script>
 
     <script>
         localStorage.setItem("eruda-entry-button","{\"rememberPos\":true,\"pos\":{\"x\":364,\"y\":846}}")
-        const src = '//cdn.jsdelivr.net/npm/eruda';
+        // const src = '//cdn.jsdelivr.net/npm/eruda';
+        const src="http://sztoosimple.gitee.io/static-map/lib//eruda.js"
         if (/eruda/.test(window.location) ) {
             document.write(`${'<scr' + 'ipt src="'}${src}"></scr` + `ipt>`);
             document.write('<scr' + 'ipt>eruda.init();</scr' + 'ipt>');
