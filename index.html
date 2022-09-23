@@ -16,12 +16,11 @@
         #map {
             height: 100%;
         }
-        .eruda-entry-btn{
-            transform: translate(-50,-50);
-        }
+       
         #map{
            opacity: 0.1;
         }
+       
     </style>
     <link rel="stylesheet" href="//sztoosimple.gitee.io/static-map/lib//leaflet@1.6.0.css" />
    
@@ -62,6 +61,14 @@
             }
             `
             document.head.appendChild(style)
+            try {
+               const elem =  document.querySelector("html > div:nth-child(2)").shadowRoot.querySelector("#eruda").querySelector(".luna-console");
+               elem.style.fontSize = "16px";
+               elem.style.color = "#000";
+            } catch (error) {
+                
+            }
+          
         }
         function performanceTest() {
             let timing = performance.timing,
