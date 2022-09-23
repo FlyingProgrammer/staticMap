@@ -359,6 +359,9 @@ console.timeLog("tick_time",timeLogIndex++)
             document.body.appendChild(script)
             script.onload = function () {
                 drawMarkers(window.markers || [])
+                if(window.markers[0]){
+                    map.panTo([window.markers[0].flat,window.markers[0].flng])
+                }
                 loadGeoJSON(window.geojson);
                 console.timeEnd("loadData")
                 console.timeLog("tick_time",timeLogIndex++)

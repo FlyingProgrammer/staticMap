@@ -8,8 +8,8 @@
   },
   "scripts": {
     "add": "git add . && git commit -m '更新'",
-    "push":"git push origin master",
-    "push1":"git push origin1 master"
+    "push":"npm run add && git push origin master",
+    "push1":"npm run add && git push origin1 master"
   },
   "repository": {
     "type": "git",
