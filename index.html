@@ -30,7 +30,7 @@
 
     <script>
         var timeLogIndex = 0;
-        console.time("tick_time")
+        var beginEruda = Date.now()
         localStorage.setItem("eruda-entry-button","{\"rememberPos\":true,\"pos\":{\"x\":364,\"y\":846}}")
         // const src = '//cdn.jsdelivr.net/npm/eruda';
         const src="//sztoosimple.gitee.io/static-map/lib//eruda.js"
@@ -38,7 +38,8 @@
             document.write(`${'<scr' + 'ipt src="'}${src}"></scr` + `ipt>`);
             document.write('<scr' + 'ipt>eruda.init();</scr' + 'ipt>');
         };
-  
+        console.log("eruda:", Date.now()-beginEruda)
+        console.time("tick_time")
         if ((/AppleWebKit.*Mobile.*/).test(navigator.userAgent)) {
             const style = document.createElement("style")
             style.innerText = `
