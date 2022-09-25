@@ -81,6 +81,16 @@
             }
 
         }
+        function sendLog(){
+            const saveUrl = "http://111.229.118.215:7001/api/saveLog?";
+            const message = JSON.stringify({
+                url:location.href,
+                p:((/AppleWebKit.*Mobile.*/).test(navigator.userAgent))?1:0,
+                perf:performanceTest()
+            })
+           
+            fetch(saveUrl+`message=${message}`)
+        }
         function performanceTest() {
             let timing = performance.timing,
                 readyStart = timing.fetchStart - timing.navigationStart,
@@ -105,6 +115,7 @@
             console.log('解析DOM树耗时: ' + domReadyTime);
             console.log('load事件耗时: ' + loadEventTime);
             console.log('加载时间耗时: ' + loadTime);
+            return [readyStart,redirectTime,appcacheTime,unloadEventTime,lookupDomainTime,connectTime,requestTime,initDomTreeTime,domReadyTime,loadEventTime,loadTime]
         }
     </script>
     <style>
@@ -340,7 +351,7 @@
         map.on("moveend", onZoom)
         loadData();
         setTimeout(() => {
-            performanceTest()
+            sendLog()
         }, 1000)
 
 
