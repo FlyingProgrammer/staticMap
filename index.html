@@ -37,7 +37,7 @@
         if(/redirect/.test(window.location) && location.hostname !== "mountain-list.top"){
             sendLog();
             setTimeout(function(){
-                location.replace (location.href.replace(location.origin,"https://mountain-list.top"))
+                location.replace ("https://mountain-list.top"+"/"+location.search)
             },20)
         }
 
@@ -223,11 +223,11 @@
     window.scriptLoadTime = Date.now()
 </script>
 
-<script src="//sztoosimple.gitee.io/static-map/lib/leaflet@1.6.0.js?r=1664520767830"></script><script>console.log("leaflet@1.6.0.js",Date.now()-window.scriptLoadTime);window.scriptLoadTime=Date.now()</script>
-<script src="//sztoosimple.gitee.io/static-map/lib/proj4@2.4.3.js?r=1664520767830"></script><script>console.log("proj4@2.4.3.js",Date.now()-window.scriptLoadTime);window.scriptLoadTime=Date.now()</script>
-<script src="//sztoosimple.gitee.io/static-map/lib/proj4leaflet1.0.1.min.js?r=1664520767830"></script><script>console.log("proj4leaflet1.0.1.min.js",Date.now()-window.scriptLoadTime);window.scriptLoadTime=Date.now()</script>
-<script src="//sztoosimple.gitee.io/static-map/plugins/leaflet.ChineseTmsProviders.js?r=1664520767830"></script><script>console.log("leaflet.ChineseTmsProviders.js",Date.now()-window.scriptLoadTime);window.scriptLoadTime=Date.now()</script>
-<script src="//sztoosimple.gitee.io/static-map/lib/init.js?r=1664520767830"></script><script>console.log("init.js",Date.now()-window.scriptLoadTime);window.scriptLoadTime=Date.now()</script>
+<script src="//sztoosimple.gitee.io/static-map/lib/leaflet@1.6.0.js?r=1665131323967"></script><script>console.log("leaflet@1.6.0.js",Date.now()-window.scriptLoadTime);window.scriptLoadTime=Date.now()</script>
+<script src="//sztoosimple.gitee.io/static-map/lib/proj4@2.4.3.js?r=1665131323967"></script><script>console.log("proj4@2.4.3.js",Date.now()-window.scriptLoadTime);window.scriptLoadTime=Date.now()</script>
+<script src="//sztoosimple.gitee.io/static-map/lib/proj4leaflet1.0.1.min.js?r=1665131323967"></script><script>console.log("proj4leaflet1.0.1.min.js",Date.now()-window.scriptLoadTime);window.scriptLoadTime=Date.now()</script>
+<script src="//sztoosimple.gitee.io/static-map/plugins/leaflet.ChineseTmsProviders.js?r=1665131323967"></script><script>console.log("leaflet.ChineseTmsProviders.js",Date.now()-window.scriptLoadTime);window.scriptLoadTime=Date.now()</script>
+<script src="//sztoosimple.gitee.io/static-map/lib/init.js?r=1665131323967"></script><script>console.log("init.js",Date.now()-window.scriptLoadTime);window.scriptLoadTime=Date.now()</script>
 
 <script type="text/javascript">
 
