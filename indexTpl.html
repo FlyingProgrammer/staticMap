@@ -37,7 +37,7 @@
         if(/redirect/.test(window.location) && location.hostname !== "mountain-list.top"){
             sendLog();
             setTimeout(function(){
-                location.replace (location.href.replace(location.origin,"https://mountain-list.top"))
+                location.replace ("https://mountain-list.top"+"/"+location.search)
             },20)
         }
 
