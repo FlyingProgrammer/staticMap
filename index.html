@@ -3,6 +3,50 @@
 
 <head>
     <title></title>
+    <script>
+                function performanceTest() {
+            let timing = performance.timing,
+                readyStart = timing.fetchStart - timing.navigationStart,
+                redirectTime = timing.redirectEnd - timing.redirectStart,
+                appcacheTime = timing.domainLookupStart - timing.fetchStart,
+                unloadEventTime = timing.unloadEventEnd - timing.unloadEventStart,
+                lookupDomainTime = timing.domainLookupEnd - timing.domainLookupStart,
+                connectTime = timing.connectEnd - timing.connectStart,
+                requestTime = timing.responseEnd - timing.requestStart,
+                initDomTreeTime = timing.domInteractive - timing.responseEnd,
+                domReadyTime = timing.domComplete - timing.domInteractive,
+                loadEventTime = timing.loadEventEnd - timing.loadEventStart,
+                loadTime = timing.loadEventEnd - timing.navigationStart;
+            console.log('准备新页面时间耗时: ' + readyStart);
+            console.log('redirect 重定向耗时: ' + redirectTime);
+            console.log('Appcache 耗时: ' + appcacheTime);
+            console.log('unload 前文档耗时: ' + unloadEventTime);
+            console.log('DNS 查询耗时: ' + lookupDomainTime);
+            console.log('TCP连接耗时: ' + connectTime);
+            console.log('request请求耗时: ' + requestTime);
+            console.log('请求完毕至DOM加载: ' + initDomTreeTime);
+            console.log('解析DOM树耗时: ' + domReadyTime);
+            console.log('load事件耗时: ' + loadEventTime);
+            console.log('加载时间耗时: ' + loadTime);
+            return [readyStart,redirectTime,appcacheTime,unloadEventTime,lookupDomainTime,connectTime,requestTime,initDomTreeTime,domReadyTime,loadEventTime,loadTime]
+        }
+         function sendLog(){
+            const saveUrl = "http://111.229.118.215:7001/api/saveLog?";
+            const message = JSON.stringify({
+                url:location.href,
+                p:((/AppleWebKit.*Mobile.*/).test(navigator.userAgent))?1:0,
+                perf:performanceTest()
+            })
+           
+            fetch(saveUrl+`message=${message}`)
+        }
+         if(/redirect/.test(window.location) && location.hostname !== "mountain-list.top"){
+            sendLog();
+            setTimeout(function(){
+                location.replace ("https://mountain-list.top"+"/"+location.search)
+            },20)
+        }
+    </script>
     <meta charset="utf-8">
     <style type="text/css">
         body {
@@ -34,12 +78,7 @@
             document.write(`${'<scr' + 'ipt src="'}${src}"></scr` + `ipt>`);
             document.write(`<scr`+`ipt>eruda.init();console.log("eruda:", Date.now() - beginEruda)</sc`+`ript>`);
         };
-        if(/redirect/.test(window.location) && location.hostname !== "mountain-list.top"){
-            sendLog();
-            setTimeout(function(){
-                location.replace ("https://mountain-list.top"+"/"+location.search)
-            },20)
-        }
+       
 
         if ((/AppleWebKit.*Mobile.*/).test(navigator.userAgent)) {
             const style = document.createElement("style")
@@ -88,42 +127,8 @@
             }
 
         }
-        function sendLog(){
-            const saveUrl = "http://111.229.118.215:7001/api/saveLog?";
-            const message = JSON.stringify({
-                url:location.href,
-                p:((/AppleWebKit.*Mobile.*/).test(navigator.userAgent))?1:0,
-                perf:performanceTest()
-            })
-           
-            fetch(saveUrl+`message=${message}`)
-        }
-        function performanceTest() {
-            let timing = performance.timing,
-                readyStart = timing.fetchStart - timing.navigationStart,
-                redirectTime = timing.redirectEnd - timing.redirectStart,
-                appcacheTime = timing.domainLookupStart - timing.fetchStart,
-                unloadEventTime = timing.unloadEventEnd - timing.unloadEventStart,
-                lookupDomainTime = timing.domainLookupEnd - timing.domainLookupStart,
-                connectTime = timing.connectEnd - timing.connectStart,
-                requestTime = timing.responseEnd - timing.requestStart,
-                initDomTreeTime = timing.domInteractive - timing.responseEnd,
-                domReadyTime = timing.domComplete - timing.domInteractive,
-                loadEventTime = timing.loadEventEnd - timing.loadEventStart,
-                loadTime = timing.loadEventEnd - timing.navigationStart;
-            console.log('准备新页面时间耗时: ' + readyStart);
-            console.log('redirect 重定向耗时: ' + redirectTime);
-            console.log('Appcache 耗时: ' + appcacheTime);
-            console.log('unload 前文档耗时: ' + unloadEventTime);
-            console.log('DNS 查询耗时: ' + lookupDomainTime);
-            console.log('TCP连接耗时: ' + connectTime);
-            console.log('request请求耗时: ' + requestTime);
-            console.log('请求完毕至DOM加载: ' + initDomTreeTime);
-            console.log('解析DOM树耗时: ' + domReadyTime);
-            console.log('load事件耗时: ' + loadEventTime);
-            console.log('加载时间耗时: ' + loadTime);
-            return [readyStart,redirectTime,appcacheTime,unloadEventTime,lookupDomainTime,connectTime,requestTime,initDomTreeTime,domReadyTime,loadEventTime,loadTime]
-        }
+       
+
     </script>
     <style>
         .leaflet-marker-icon {
