@@ -1,4 +1,4 @@
-window.markets = [
+window.markers =  [
     {
       fname: "布喀达坂峰",
       falt: "6860",
