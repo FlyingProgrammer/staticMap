@@ -16,7 +16,7 @@ window.markers =
 			"flat": 36.0283,
 			"flng": 90.9467,
 			"fcounty": "玉树藏族自治州治多县",
-			"备注": null
+			"备注": ""
 		},
 		{
 			"fname": "各拉丹冬峰",
@@ -34,7 +34,7 @@ window.markers =
 			"flat": 33.4025,
 			"flng": 91.0908,
 			"fcounty": "海西蒙古族藏族自治州格尔木市",
-			"备注": null
+			"备注": ""
 		},
 		{
 			"fname": "各拉丹冬6543",
@@ -43,7 +43,7 @@ window.markers =
 			"flat": 33.4592,
 			"flng": 91.1275,
 			"fcounty": "海西蒙古族藏族自治州格尔木市",
-			"备注": null
+			"备注": ""
 		},
 		{
 			"fname": "嘎尔岗日",
@@ -52,7 +52,7 @@ window.markers =
 			"flat": 33.4667,
 			"flng": 90.8733,
 			"fcounty": "海西蒙古族藏族自治州格尔木市",
-			"备注": null
+			"备注": ""
 		},
 		{
 			"fname": "布喀达坂峰II东",
@@ -61,7 +61,7 @@ window.markers =
 			"flat": 36.0233,
 			"flng": 91.0008,
 			"fcounty": "玉树藏族自治州治多县",
-			"备注": null
+			"备注": ""
 		},
 		{
 			"fname": "阿尼玛卿玛卿岗日",
@@ -79,7 +79,7 @@ window.markers =
 			"flat": 34.7383,
 			"flng": 99.5033,
 			"fcounty": "果洛藏族自治州玛沁县",
-			"备注": null
+			"备注": ""
 		},
 		{
 			"fname": "冬索陇巴？",
@@ -88,7 +88,7 @@ window.markers =
 			"flat": 33.3025,
 			"flng": 91.31,
 			"fcounty": "海西蒙古族藏族自治州格尔木市",
-			"备注": null
+			"备注": ""
 		},
 		{
 			"fname": "唐古拉山",
@@ -97,7 +97,7 @@ window.markers =
 			"flat": 33.2242,
 			"flng": 91.1842,
 			"fcounty": "海西蒙古族藏族自治州格尔木市",
-			"备注": null
+			"备注": ""
 		},
 		{
 			"fname": "玉珠峰",
@@ -115,7 +115,7 @@ window.markers =
 			"flat": 33.5775,
 			"flng": 91.0383,
 			"fcounty": "海西蒙古族藏族自治州格尔木市",
-			"备注": null
+			"备注": ""
 		},
 		{
 			"fname": "岗钦扎仲",
@@ -124,7 +124,7 @@ window.markers =
 			"flat": 33.9358,
 			"flng": 90.7292,
 			"fcounty": "海西蒙古族藏族自治州格尔木市",
-			"备注": null
+			"备注": ""
 		},
 		{
 			"fname": "岗扎日东",
@@ -133,7 +133,7 @@ window.markers =
 			"flat": 35.6,
 			"flng": 89.7633,
 			"fcounty": "玉树藏族自治州治多县,那曲市安多县",
-			"备注": null
+			"备注": ""
 		},
 		{
 			"fname": "龙亚拉峰",
@@ -142,7 +142,7 @@ window.markers =
 			"flat": 33.1033,
 			"flng": 92.0658,
 			"fcounty": "海西蒙古族藏族自治州格尔木市",
-			"备注": null
+			"备注": ""
 		},
 		{
 			"fname": "景柔洛玛岗陇？",
@@ -151,7 +151,7 @@ window.markers =
 			"flat": 33.3858,
 			"flng": 91.3367,
 			"fcounty": "海西蒙古族藏族自治州格尔木市",
-			"备注": null
+			"备注": ""
 		},
 		{
 			"fname": "马兰山",
@@ -160,7 +160,7 @@ window.markers =
 			"flat": 35.835,
 			"flng": 90.745,
 			"fcounty": "玉树藏族自治州治多县",
-			"备注": null
+			"备注": ""
 		},
 		{
 			"fname": "巴斯康根",
@@ -169,7 +169,7 @@ window.markers =
 			"flat": 32.9433,
 			"flng": 91.7975,
 			"fcounty": "海西蒙古族藏族自治州格尔木市,那曲市安多县",
-			"备注": null
+			"备注": ""
 		},
 		{
 			"fname": "赛多浦岗日",
@@ -178,7 +178,7 @@ window.markers =
 			"flat": 33.4225,
 			"flng": 91.5358,
 			"fcounty": "海西蒙古族藏族自治州格尔木市",
-			"备注": null
+			"备注": ""
 		},
 		{
 			"fname": "巍雪山",
@@ -187,6 +187,6 @@ window.markers =
 			"flat": 36.1367,
 			"flng": 90.0725,
 			"fcounty": "玉树藏族自治州治多县",
-			"备注": null
+			"备注": ""
 		}
 	]
