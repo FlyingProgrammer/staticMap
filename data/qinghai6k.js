@@ -1,5 +1,4 @@
-window.markets = {
-  data: [
+window.markets =  [
     {
       fname: "布喀达坂峰",
       falt: "6860",
@@ -189,5 +188,4 @@ window.markets = {
       fcounty: "玉树藏族自治州治多县",
       fcomment: null,
     },
-  ],
-}.data;
+  ]
